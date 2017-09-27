@@ -3,9 +3,9 @@
   
     
     <entry>
-      <title></title>
+      <title><![CDATA[Xdebug原理学习及其攻击面复现]]></title>
       <url>/2017/09/27/Xdebug%E5%8E%9F%E7%90%86%E5%8F%8A%E5%85%B6%E6%94%BB%E5%87%BB%E9%9D%A2%E5%A4%8D%E7%8E%B0/</url>
-      <content type="html"><![CDATA[<h1 id="Xdebug原理学习及其攻击面复现"><a href="#Xdebug原理学习及其攻击面复现" class="headerlink" title="Xdebug原理学习及其攻击面复现"></a>Xdebug原理学习及其攻击面复现</h1><h3 id="Xdebug的工作原理可以总结为下面几个步骤"><a href="#Xdebug的工作原理可以总结为下面几个步骤" class="headerlink" title="Xdebug的工作原理可以总结为下面几个步骤"></a>Xdebug的工作原理可以总结为下面几个步骤</h3><p><a href="https://my.oschina.net/atanl/blog/371424?fromerr=FV9ksMPu" target="_blank" rel="external">文字部分来自互联网</a></p>
+      <content type="html"><![CDATA[<h3 id="Xdebug的工作原理可以总结为下面几个步骤"><a href="#Xdebug的工作原理可以总结为下面几个步骤" class="headerlink" title="Xdebug的工作原理可以总结为下面几个步骤"></a>Xdebug的工作原理可以总结为下面几个步骤</h3><p><a href="https://my.oschina.net/atanl/blog/371424?fromerr=FV9ksMPu" target="_blank" rel="external">文字部分来自互联网</a></p>
 <p>1）IDE中已经集成了一个遵循BGDp的Xdebug插件。当要debug的时候，点击一些IDE的某个按钮，启动这个插件。该插件会启动一个9000的端口监听远程服务器发过来的debug信息。其中BGDp是客户端和服务端的通信协议</p>
 <p>2）浏览器向Httpd服务器发送一个带有<code>XDEBUG_SESSION_START</code>参数的请求，Httpd收到这个请求之后交给后端的PHP进行处理</p>
 <p>3）Php（有Xdebug的拓展）看到这个请求是带了<code>XDEBUG_SESSION_START</code> 参数，就告诉Xdebug，“嘿，我要debug喔，你准备一下”。<strong>这时，Xdebug这时会向来源ip客户端的9000端口（IDE监听）发送一个debug请求，然后客户端的9000端口响应这个请求，那么debug就开始了。</strong></p>
@@ -46,6 +46,12 @@
 <p>如果设置生效， <a href="https://xdebug.org/docs/all_settings#remote_host" target="_blank" rel="external">xdebug.remote_host</a> 设置会忽略而Xdebug会尝试给制造HTTP请求的客户端进行连接。它会检查$_SERVER[‘REMOTE_ADDR’] 变量并找出使用的IP地址。请记住它没有有效的过滤，任何人都能启动调试会话连接到服务器，即使他们的地址并不匹配 <a href="https://xdebug.org/docs/all_settings#remote_host" target="_blank" rel="external">xdebug.remote_host</a>.</p>
 ]]></content>
       
+        
+        <tags>
+            
+            <tag> 代码审计 </tag>
+            
+        </tags>
         
     </entry>
     
